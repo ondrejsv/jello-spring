@@ -507,221 +507,234 @@ var map2 = new Ext.KeyMap('thetagform', {
 
 }
 
-function saveTagForm(b,win)
-{
+function saveTagForm(b, win) {
 //save tag form
 
-try{var id=Ext.getCmp("fid").getValue();}catch(e){id=0;}
-var ttag=Ext.getCmp("ttype").getValue();
+    try {
+        var id = Ext.getCmp("fid").getValue();
+    } catch (e) {
+        id = 0;
+    }
+    var ttag = Ext.getCmp("ttype").getValue();
 
-if (id>0){
+    if (id > 0) {
 //edit existing
-var newValue=Ext.getCmp("ftag").getValue();
-if (isValidTag(newValue)==false){return;}
-var ix=tagStore.find("id",new RegExp("^"+id+"$"));
-var r=tagStore.getAt(ix);
-var oldValue=r.get("tag");
-var tid=r.get("id");
-var tparent=r.get("parent"); 
-var tistag=r.get("istag");
-var tisproject=r.get("isproject");
-var tisclosed=Ext.getCmp("fisclosed").getValue();
-var tnotes=Ext.getCmp("fnotes").getValue();
-var tprive=Ext.getCmp("fprivate").getValue();
-var tarchived=Ext.getCmp("fisarchived").getValue();
-var tarchive=Ext.getCmp("farchiveID").getValue();
-if (ttag==txtTag){tistag=true;tisproject=false;}
-if (ttag==txtProject){tisproject=true;tistag=true;}
-if (ttag==txtFolder){tisproject=false;tistag=false;}
+        var newValue = Ext.getCmp("ftag").getValue();
+        if (isValidTag(newValue) == false) {
+            return;
+        }
+        var ix = tagStore.find("id", new RegExp("^" + id + "$"));
+        var r = tagStore.getAt(ix);
+        var oldValue = r.get("tag");
+        var tid = r.get("id");
+        var tparent = r.get("parent");
+        var tistag = r.get("istag");
+        var tisproject = r.get("isproject");
+        var tisclosed = Ext.getCmp("fisclosed").getValue();
+        var tnotes = Ext.getCmp("fnotes").getValue();
+        var tprive = Ext.getCmp("fprivate").getValue();
+        var tarchived = Ext.getCmp("fisarchived").getValue();
+        var tarchive = Ext.getCmp("farchiveID").getValue();
+        if (ttag == txtTag) {
+            tistag = true;
+            tisproject = false;
+        }
+        if (ttag == txtProject) {
+            tisproject = true;
+            tistag = true;
+        }
+        if (ttag == txtFolder) {
+            tisproject = false;
+            tistag = false;
+        }
 
-r.beginEdit();
-r.set("id",tid);
-r.set("tag",newValue);
-r.set("parent",tparent);
-r.set("istag",tistag);
-r.set("isproject",tisproject);
-r.set("notes",tnotes);
-r.set("private",tprive);
-r.set("archived",tarchived);
-r.set("archive",tarchive);
-r.set("closed",tisclosed);
-r.set("modified",new Date());
+        r.beginEdit();
+        r.set("id", tid);
+        r.set("tag", newValue);
+        r.set("parent", tparent);
+        r.set("istag", tistag);
+        r.set("isproject", tisproject);
+        r.set("notes", tnotes);
+        r.set("private", tprive);
+        r.set("archived", tarchived);
+        r.set("archive", tarchive);
+        r.set("closed", tisclosed);
+        r.set("modified", new Date());
 
-r.endEdit();
-var rr=r;
-tagStore.clearFilter();
-syncStore(tagStore,"jello.tags");
+        r.endEdit();
+        var rr = r;
+        tagStore.clearFilter();
+        syncStore(tagStore, "jello.tags");
 //save settings
-jese.saveCurrent();
+        jese.saveCurrent();
 //replace tag name in other places
-updateOLCategory(oldValue,newValue);
-  if (trimLow(newValue)!=trimLow(oldValue))
-  {
-  replaceItemTag(oldValue,newValue);
-  try{
-  var nd=Ext.getCmp("tree").getSelectionModel().getSelectedNode();
-	if (nd.text==oldValue)
-  {nd.setText(newValue);}
-  else{
-  if (nd.firstChild!=null)
-	{var nnd=nd.findChild("text",oldValue);if(nnd!=null){nnd.setText(newValue);}}
-	}
-    }catch(e){}
-  } 
+        updateOLCategory(oldValue, newValue);
+        if (trimLow(newValue) != trimLow(oldValue)) {
+            replaceItemTag(oldValue, newValue);
+            try {
+                var nd = Ext.getCmp("tree").getSelectionModel().getSelectedNode();
+                if (nd.text == oldValue) {
+                    nd.setText(newValue);
+                } else {
+                    if (nd.firstChild != null) {
+                        var nnd = nd.findChild("text", oldValue);
+                        if (nnd != null) {
+                            nnd.setText(newValue);
+                        }
+                    }
+                }
+            } catch (e) {
+            }
+        }
 //if there is a grid update store
-    try{
-    var gstore=Ext.getCmp("grid").getStore();
-    var ix=gstore.findBy(function(r){if(r.get("type")=="t" && r.get("entryID")==tid){return true;}});
-    var r=gstore.getAt(ix);
-    r.beginEdit();
-    r.set("subject",newValue);
-    r.endEdit();
-    }catch(e){}
-    if (lastOpenTagID==tid){showTagFolder(rr);}
-    
-}
-else
-{
+        try {
+            var gstore = Ext.getCmp("grid").getStore();
+            var ix = gstore.findBy(function(r) {
+                if (r.get("type") == "t" && r.get("entryID") == tid) {
+                    return true;
+                }
+            });
+            var r = gstore.getAt(ix);
+            r.beginEdit();
+            r.set("subject", newValue);
+            r.endEdit();
+        } catch (e) {
+        }
+        if (lastOpenTagID == tid) {
+            showTagFolder(rr);
+        }
+
+    } else {
 /////// new tag	 /////////////
-var newValue=Ext.getCmp("ftag").getValue();
-if (isValidTag(newValue)==false){return;}
-if (newValue==txtNewTag){Ext.getCmp("ftag").focus(true);return;}
-var tparent=Ext.getCmp("fparent").getValue(); 
-if (notEmpty(ttag)==false){ttag=txtTag;}
-if (getTagType(tparent)==true && ttag==txtFolder){alert(txtMsgFolUndTag);return;}
-var tistag=true;
-if (ttag==txtFolder){tistag=false;}
-if (ttag==txtProject){tisproject=true;}
-var tnotes=Ext.getCmp("fnotes").getValue();
-var tprive=Ext.getCmp("fprivate").getValue();
-var tisclosed=Ext.getCmp("fisclosed").getValue();
-var tarchive=Ext.getCmp("farchiveID").getValue();
-var tarchived=Ext.getCmp("fisarchived").getValue();
+        var newValue = Ext.getCmp("ftag").getValue();
+        if (isValidTag(newValue) == false) {
+            return;
+        }
+        if (newValue == txtNewTag) {
+            Ext.getCmp("ftag").focus(true);
+            return;
+        }
+        var tparent = Ext.getCmp("fparent").getValue();
+        if (notEmpty(ttag) == false) {
+            ttag = txtTag;
+        }
+        if (getTagType(tparent) == true && ttag == txtFolder) {
+            alert(txtMsgFolUndTag);
+            return;
+        }
+        var tistag = true;
+        if (ttag == txtFolder) {
+            tistag = false;
+        }
+        if (ttag == txtProject) {
+            tisproject = true;
+        }
+        var tnotes = Ext.getCmp("fnotes").getValue();
+        var tprive = Ext.getCmp("fprivate").getValue();
+        var tisclosed = Ext.getCmp("fisclosed").getValue();
+        var tarchive = Ext.getCmp("farchiveID").getValue();
+        var tarchived = Ext.getCmp("fisarchived").getValue();
 
-jello.lastTagId++;
-var tr=new tagRecord({
-id:jello.lastTagId,
-tag:newValue,
-parent:tparent, 
-istag:tistag,
-isproject:tisproject,
-notes:tnotes,
-archive:tarchive,
-archived:tarchived,
-closed:tisclosed,
-modified:new Date(),
-isprivate:tprive
-});
-tagStore.add(tr);
-tagStore.clearFilter();
-syncStore(tagStore,"jello.tags");
+        jello.lastTagId++;
+        var tr = new tagRecord({
+            id: jello.lastTagId,
+            tag: newValue,
+            parent: tparent,
+            istag: tistag,
+            isproject: tisproject,
+            notes: tnotes,
+            archive: tarchive,
+            archived: tarchived,
+            closed: tisclosed,
+            modified: new Date(),
+            isprivate: tprive
+        });
+        tagStore.add(tr);
+        tagStore.clearFilter();
+        syncStore(tagStore, "jello.tags");
 //save settings
-jese.saveCurrent();
-updateOLCategory(newValue);
+        jese.saveCurrent();
+        updateOLCategory(newValue);
 
-try{
-  if (Ext.getCmp("tvpanel").body.dom.innerText!='')
-  {
-  var nd=Ext.getCmp("tree").getSelectionModel().getSelectedNode();
-  	if (nd==null)
-  	{
-  	//select jello objects
-  	var nd=Ext.getCmp("tree").getNodeById("tags");
-  	}
-  	else
-  	{
-  	//if another type node was selected reset nd to tags
-  	var data=nodeData(nd.id);
-  	if (data[0]!="tag"){var nd=Ext.getCmp("tree").getNodeById("tags");}
-  	}
-  	if (nd.firstChild!=null || nd.expanded==true)
-  	{
-  	var nnd=new Ext.tree.TreeNode({text:newValue,id:jello.lastTagId,expandable:true,icon:getNodeIcon(jello.lastTagId),expanded:false,listeners:{expand:expNode}});
-  	nd.appendChild(nnd);
-  	}
-  }
-}catch(e){}
+        try {
+            if (Ext.getCmp("tvpanel").body.dom.innerText != '') {
+                var nd = Ext.getCmp("tree").getSelectionModel().getSelectedNode();
+                if (nd == null) {
+                    //select jello objects
+                    var nd = Ext.getCmp("tree").getNodeById("tags");
+                } else {
+                    //if another type node was selected reset nd to tags
+                    var data = nodeData(nd.id);
+                    if (data[0] != "tag") {
+                        var nd = Ext.getCmp("tree").getNodeById("tags");
+                    }
+                }
+                if (nd.firstChild != null || nd.expanded == true) {
+                    var nnd = new Ext.tree.TreeNode({ text: newValue, id: jello.lastTagId, expandable: true, icon: getNodeIcon(jello.lastTagId), expanded: false, listeners: { expand: expNode } });
+                    nd.appendChild(nnd);
+                }
+            }
+        } catch (e) {
+        }
 
 // if there is a grid, update its store	
-try{
-if (lastOpenTagID==tparent)
-{
-var store=Ext.getCmp("grid").getStore();
-var ar=new actionObject(tr,true);
-var newRec=new actionRecord(ar);
-store.add(newRec);
-}
-}catch(e){}
-
-}
-Ext.info.msg(txtEditTag, txtMsgTagUpd);
-try{win.destroy();}catch(e){}
-}
-
-function replaceItemTag(oldVal,newVal)
-{
-//replace occurences of a context or project in items collection with another
-		iF=NSpace.GetFolderFromID(jello.actionFolder).Items;
-		
-    its=iF.Restrict("@SQL=urn:schemas-microsoft-com:office:office#Keywords like '%"+Trim(oldVal)+"%'");
-
-    var itsCounter=its.Count;
-    	if (itsCounter>0)
-			{
-				for (var x=itsCounter;x>0;x--)
-				{
-				try{
-        var e=its(x).itemProperties.item(catProperty).Value;
-				e=e.replace(new RegExp(",","g"),";");
-				var t=e.split(";");
-				var nca="";
-					for (var y=0;y<=t.length;y++)
-					{
-						if (notEmpty(t[y]))
-						{
-						   if (trimLow(t[y])==trimLow(oldVal))
-						   {nca=nca+newVal+";";}
-						   else
-						   {nca=nca+t[y]+";";}
-						}
-					}
-				its(x).itemProperties.item(catProperty).Value=nca;	
-				its(x).Save();
-				}catch(e){}
+        try {
+            if (lastOpenTagID == tparent) {
+                var store = Ext.getCmp("grid").getStore();
+                var ar = new actionObject(tr, true);
+                var newRec = new actionRecord(ar);
+                store.add(newRec);
+            }
+        } catch (e) {
         }
-			}
-			
-//replace journal entries tags			
-		iF=NSpace.GetFolderFromID(jello.nonActionFolder).Items;
-		
-    its=iF.Restrict("@SQL=urn:schemas-microsoft-com:office:office#Keywords like '%"+Trim(oldVal)+"%'");
 
-    var itsCounter=its.Count;
-    	if (itsCounter>0)
-			{
-				for (var x=itsCounter;x>0;x--)
-				{
-				try{
-        var e=its(x).itemProperties.item(catProperty).Value;
-				e=e.replace(new RegExp(",","g"),";");
-				var t=e.split(";");
-				var nca="";
-					for (var y=0;y<=t.length;y++)
-					{
-						if (notEmpty(t[y]))
-						{
-						   if (trimLow(t[y])==trimLow(oldVal))
-						   {nca=nca+newVal+";";}
-						   else
-						   {nca=nca+t[y]+";";}
-						}
-					}
-				its(x).itemProperties.item(catProperty).Value=nca;	
-				its(x).Save();
-				}catch(e){}
+    }
+    Ext.info.msg(txtEditTag, txtMsgTagUpd);
+    try {
+        win.destroy();
+    } catch (e) {
+    }
+}
+
+function replaceItemTag(oldVal, newVal) {
+    //replace occurences of a context or project in items collection with another
+    replaceTagInFolder(oldVal, newVal, jello.actionFolder);
+    //replace journal entries tags			
+    replaceTagInFolder(oldVal, newVal, jello.nonActionFolder);
+    //replace inbox entries tags
+    replaceTagInFolder(oldVal, newVal, jello.inboxFolder);
+    //replace archive entries tags			
+    replaceTagInFolder(oldVal, newVal, jello.archiveFolder);
+}
+
+function replaceTagInFolder(oldVal, newVal, folder) {
+    iF = NSpace.GetFolderFromID(folder).Items;
+
+    its = iF.Restrict("@SQL=urn:schemas-microsoft-com:office:office#Keywords like '%" + Trim(oldVal) + "%'");
+
+    var itsCounter = its.Count;
+    if (itsCounter > 0) {
+        for (var x = itsCounter; x > 0; x--) {
+            try {
+                var e = its(x).itemProperties.item(catProperty).Value;
+                e = e.replace(new RegExp(",", "g"), ";");
+                var t = e.split(";");
+                var nca = "";
+                for (var y = 0; y <= t.length; y++) {
+                    if (notEmpty(t[y])) {
+                        if (trimLow(t[y]) == trimLow(oldVal)) {
+                            nca = nca + newVal + ";";
+                        } else {
+                            nca = nca + t[y] + ";";
+                        }
+                    }
+                }
+                its(x).itemProperties.item(catProperty).Value = nca;
+                its(x).Save();
+            } catch (e) {
+            }
         }
-			}
-			
+    }
 }
 
 function getActionTagName()

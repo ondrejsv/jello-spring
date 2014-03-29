@@ -259,21 +259,27 @@ catch(e)
 {return false;}
 }
 
-function addOLItemCategory(olitem,tagname)
-{
 
-var cats=olitem.itemProperties.item(catProperty).Value;
-cats=cats.replace(new RegExp(",","g"),";");
-var c=cats.split(";");
-var flag=false;
-	for (var x=0;x<c.length;x++)
-	{
-		if (trimLow(c[x])==trimLow(tagname)){flag=true;}
-	}
+function addOLItemCategory(olitem, tagname) {
+	/// <summary>
+	/// Adds a plain Outlook category to the OL item.
+	/// </summary>
+	/// <param name="olitem">Reference to OL item to add the category to.</param>
+	/// <param name="tagname">String name of the category</param>
+    var cats = olitem.itemProperties.item(catProperty).Value;
+    cats = cats.replace(new RegExp(",", "g"), ";");
+    var c = cats.split(";");
+    var flag = false;
+    for (var x = 0; x < c.length; x++) {
+        if (trimLow(c[x]) == trimLow(tagname)) {
+            flag = true;
+        }
+    }
 
-if (flag==false)
-{olitem.itemProperties.item(catProperty).Value+=";"+tagname;
-olitem.Save();}
+    if (flag == false) {
+        olitem.itemProperties.item(catProperty).Value += ";" + tagname;
+        olitem.Save();
+    }
 }
 
 function iconBasedOnClass(c,cdef)

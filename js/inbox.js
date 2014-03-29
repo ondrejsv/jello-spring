@@ -432,95 +432,107 @@ var extractOL = function(r){
    }catch(e){}
 }
 
-function msgToolbar(isOLView)
-{
+function msgToolbar(isOLView) {
 
-var comboMax=300;
-if (isOLView){comboMax=100;}
+    var comboMax = 300;
+    if (isOLView) {
+        comboMax = 100;
+    }
 //render the inbox toolbar
     var dateMenu = new Ext.menu.DateMenu({
-        handler : function(dp, idate){
+        handler: function(dp, idate) {
             //var dt=idate.format('m/j/Y');
             //if(jello.dateFormat == 0 || jello.dateFormat == "0"){dt=idate.format('j/m/Y');}
-            var dt=idate.toUTCString();
-            inboxAction(null,'due',dt);
+            var dt = idate.toUTCString();
+            inboxAction(null, 'due', dt);
         }
     });
 
-        var repmenu = new Ext.SplitButton({
-        icon:'img\\reply.gif',
-        cls:'x-btn-icon',
+    var repmenu = new Ext.SplitButton({
+        icon: 'img\\reply.gif',
+        cls: 'x-btn-icon',
         tooltip: txtReplyInfo,
-        id:'ireply',
-		    handler:inboxAction,
-        menu:new Ext.menu.Menu({
-        items: [
-        {
-        icon: 'img\\list_review.gif',
-        cls:'x-btn-icon',
-        id:'repall',
-        text: txtReplyAll,
-		  	handler:inboxAction
-      }]})
-        });
+        id: 'ireply',
+        handler: inboxAction,
+        menu: new Ext.menu.Menu({
+            items: [
+                {
+                    icon: 'img\\list_review.gif',
+                    cls: 'x-btn-icon',
+                    id: 'repall',
+                    text: txtReplyAll,
+                    handler: inboxAction
+                }
+            ]
+        })
+    });
 
 
     var delgmenu = new Ext.menu.Menu({
         id: 'dlgmenu',
-        items: [{cls:'x-btn-icon',
-        icon: 'img\\user.gif',
-        text: txtDelgForInfo+' (Ctrl+E)',
-    		handler:inboxAction
-},{
-        cls:'x-btn-icon',
-        icon: 'img\\list_review.gif',
-        text: txtRevForInfo,
-        id:'irev',
-		handler:inboxAction
-			},{
-        cls:'x-btn-icon',
-        icon: 'img\\list_someday.gif',
-        text: txtIncubForInfo,
-			  id:'iinc',
-		    handler:inboxAction
-        }]});
+        items: [
+            {
+                cls: 'x-btn-icon',
+                icon: 'img\\user.gif',
+                text: txtDelgForInfo + ' (Ctrl+E)',
+                handler: inboxAction
+            }, {
+                cls: 'x-btn-icon',
+                icon: 'img\\list_review.gif',
+                text: txtRevForInfo,
+                id: 'irev',
+                handler: inboxAction
+            }, {
+                cls: 'x-btn-icon',
+                icon: 'img\\list_someday.gif',
+                text: txtIncubForInfo,
+                id: 'iinc',
+                handler: inboxAction
+            }
+        ]
+    });
 
-       var actmenu = new Ext.menu.Menu({
+    var actmenu = new Ext.menu.Menu({
         id: 'actmenu',
 
         items: [
-		{
-        icon:'img\\move.gif',
-        cls:'x-btn-icon',
-        text: txtMoveInfo + " (shift+ctrl+v)",
-        id:'imove',
-		handler:inboxAction
-        },{
-                cls:'x-btn-icon',
-                text:txtCrAppForInfo,
+            {
+                icon: 'img\\move.gif',
+                cls: 'x-btn-icon',
+                text: txtMoveInfo + " (shift+ctrl+v)",
+                id: 'imove',
+                handler: inboxAction
+            }, {
+                cls: 'x-btn-icon',
+                text: txtCrAppForInfo,
                 icon: 'img\\appoint.gif',
-                handler:function(){
-        inboxAction(null,'cal');}
-        },        {
+                handler: function() {
+                    inboxAction(null, 'cal');
+                }
+            }, {
                 text: txtTaskCnvToPrj,
-                cls:'x-btn-icon',
-                id:'aproject',
+                cls: 'x-btn-icon',
+                id: 'aproject',
                 icon: 'img\\project.gif',
-                handler:function(){
-        inboxAction(null,'prj');}
-        }
-
-        ]});
+                handler: function() {
+                    inboxAction(null, 'prj');
+                }
+            }
+        ]
+    });
 
     tbar1 = new Ext.Toolbar();
     //tbar1.render('main');
-        tbar1.add({
-        icon: 'img\\new.gif',
-        cls:'x-btn-icon',
-        id: 'inew',
-        tooltip: txtNewHere,
-			listeners:{click: function(b,e){
-			addOLItemHere(isInbox);}}
+    tbar1.add({
+            icon: 'img\\new.gif',
+            cls: 'x-btn-icon',
+            id: 'inew',
+            tooltip: txtNewHere,
+            listeners: {
+                click: function(b, e) {
+                    addOLItemHere(isInbox);
+                }
+            }
         },
         /*
         {
@@ -539,132 +551,130 @@ if (isOLView){comboMax=100;}
         */
         '-',
         {
-        menu:actmenu,
-                listeners:{
-        menushow: function(c){lowerOLViewCtl(true);},
-        menuhide: function(c){lowerOLViewCtl(false);}
-        },
-        text:'Actions'
-        },repmenu
-        ,{
-        icon:'img\\forward.gif',
-        cls:'x-btn-icon',
-        tooltip: txtFwdInfo,
-		id:'iforw',
-		handler:inboxAction
-        },{
-        icon: 'img\\page_delete.gif',
-        cls:'x-btn-icon',
-        tooltip: txtDelete+' (DEL)',
-			listeners:{click: function(b,e){
-			inboxAction(null,'del');}}
-        }
-       ,{
-        tooltip: txtOpenInOutlook + '(Ctrl+Q)',
-        cls:'x-btn-icon',
-        icon: 'img\\info.gif',
-        id:'iol',
-		handler:inboxAction
-        },'-',
+            menu: actmenu,
+            listeners: {
+                menushow: function(c) { lowerOLViewCtl(true); },
+                menuhide: function(c) { lowerOLViewCtl(false); }
+            },
+            text: 'Actions'
+        }, repmenu, {
+            icon: 'img\\forward.gif',
+            cls: 'x-btn-icon',
+            tooltip: txtFwdInfo,
+            id: 'iforw',
+            handler: inboxAction
+        }, {
+            icon: 'img\\page_delete.gif',
+            cls: 'x-btn-icon',
+            tooltip: txtDelete + ' (DEL)',
+            listeners: {
+                click: function(b, e) {
+                    inboxAction(null, 'del');
+                }
+            }
+        }, {
+            tooltip: txtOpenInOutlook + '(Ctrl+Q)',
+            cls: 'x-btn-icon',
+            icon: 'img\\info.gif',
+            id: 'iol',
+            handler: inboxAction
+        }, '-',
         new Ext.form.ComboBox({
-                fieldLabel: 'Tags',
-                id: 'itags',
-                store:globalTags,
-                hideTrigger:false,
-                typeAhead:false,
-                width:100,
-                listWidth:200,
-                triggerAction:'all',
-                emptyText:txtTagSelInfo,
-                mode:'local',
-                maxHeight:comboMax,
-                listeners:{
-         expand: function(c){lowerOLViewCtl(true);}
-         ,
-		    specialkey: function(f, e){
-            if(e.getKey()==e.ENTER){
-                userTriggered = true;
-                e.stopEvent();
-                f.el.blur();
-                inboxAction(null,"tag");}
-                setTimeout(function(){
-            Ext.getCmp("itags").focus();
-            },300);
+            fieldLabel: 'Tags',
+            id: 'itags',
+            store: globalTags,
+            hideTrigger: false,
+            typeAhead: false,
+            width: 100,
+            listWidth: 200,
+            triggerAction: 'all',
+            emptyText: txtTagSelInfo,
+            mode: 'local',
+            maxHeight: comboMax,
+            listeners: {
+                expand: function(c) { lowerOLViewCtl(true); },
+                specialkey: function(f, e) {
+                    if (e.getKey() == e.ENTER) {
+                        userTriggered = true;
+                        e.stopEvent();
+                        f.el.blur();
+                        inboxAction(null, "tag");
+                    }
+                    setTimeout(function() {
+                        Ext.getCmp("itags").focus();
+                    }, 300);
                 },
 
-         collapse: function(c){lowerOLViewCtl(false);}
-         ,
-            select: function(cb,rec,idx){
-            inboxAction(null,"tag");
+                collapse: function(c) { lowerOLViewCtl(false); },
+                select: function(cb, rec, idx) {
+                    inboxAction(null, "tag");
+                }
             }
-		}
 
-            }),
-
-		{
-        iconCls:'olarchive',
-        text:'<b>'+txtArchive+'</b>',
-        tooltip: txtArcvInfo+' (Ctrl+A)',
-        width:40,
-        id:'iarc',
-		handler:inboxAction
-        },{
-        cls:'x-btn-icon',
-        icon: 'img\\collect16.png',
-        id:'arconly',
-        tooltip:txtArchiveOnly+' (Ctrl+B)',
-			handler:inboxAction
-      },'-',{
-                cls:'x-btn-icon',
-                icon: 'img\\refresh.gif',
-                tooltip:txtRefresh+' (Ctrl+S)',
-                id:'irefresh',
-                handler:refreshInboxView
-        },/*{
+        }),
+        {
+            iconCls: 'olarchive',
+            text: '<b>' + txtArchive + '</b>',
+            tooltip: txtArcvInfo + ' (Ctrl+A)',
+            width: 40,
+            id: 'iarc',
+            handler: inboxAction
+        }, {
+            cls: 'x-btn-icon',
+            icon: 'img\\collect16.png',
+            id: 'arconly',
+            tooltip: txtArchiveOnly + ' (Ctrl+B)',
+            handler: inboxAction
+        }, '-', {
+            cls: 'x-btn-icon',
+            icon: 'img\\refresh.gif',
+            tooltip: txtRefresh + ' (Ctrl+S)',
+            id: 'irefresh',
+            handler: refreshInboxView
+        }, /*{
         icon: 'img\\filter.gif',
         cls:'x-btn-icon',
         tooltip: 'Set A View',
         id:'setvw',
         listeners:{click:function(){setActionView();}}
         }*/
-		'-',{
-    xtype: 'textfield',
-		width:130,
-		emptyText:'Add Action',
-		hidden:isOLView,
-		id:'inlinenewaction',
-		listeners:{
-		    specialkey: function(f, e){
-            if(e.getKey()==e.ENTER){
-                userTriggered = true;
-                e.stopEvent();
-                f.el.blur();
-                quickAddAction(true);}},
-        focus: function(t){t.getEl().fadeIn();}
-		}},'-',{
-                cls:'x-btn-icon',
-                icon: 'img\\calendar.gif',
-                tooltip:txtDueForInfo+' (Ctrl+D)',
-                id:'popdate',
-                menu: dateMenu
-        },'-'
-        ,new Ext.Toolbar.SplitButton({
-        cls:'x-btn-icon',
-        icon: 'img\\user.gif',
-        tooltip: txtDelgForInfo+' (Ctrl+E)',
-        id:'ideleg',
-        menu:delgmenu,
-        listeners:{
-        menushow: function(dgbut,dgmen){lowerOLViewCtl(true);},
-        menuhide: function(dgbut,dgmen){lowerOLViewCtl(false);}
-        },
-		handler:inboxAction
-        })
-
-        ,'-'
-        );
-return tbar1;
-
+        '-', {
+            xtype: 'textfield',
+            width: 130,
+            emptyText: 'Add Action',
+            hidden: isOLView,
+            id: 'inlinenewaction',
+            listeners: {
+                specialkey: function(f, e) {
+                    if (e.getKey() == e.ENTER) {
+                        userTriggered = true;
+                        e.stopEvent();
+                        f.el.blur();
+                        quickAddAction(true);
+                    }
+                },
+                focus: function(t) { t.getEl().fadeIn(); }
+            }
+        }, '-', {
+            cls: 'x-btn-icon',
+            icon: 'img\\calendar.gif',
+            tooltip: txtDueForInfo + ' (Ctrl+D)',
+            id: 'popdate',
+            menu: dateMenu
+        }, '-', new Ext.Toolbar.SplitButton({
+            cls: 'x-btn-icon',
+            icon: 'img\\user.gif',
+            tooltip: txtDelgForInfo + ' (Ctrl+E)',
+            id: 'ideleg',
+            menu: delgmenu,
+            listeners: {
+                menushow: function(dgbut, dgmen) { lowerOLViewCtl(true); },
+                menuhide: function(dgbut, dgmen) { lowerOLViewCtl(false); }
+            },
+            handler: inboxAction
+        }), '-'
+    );
+    return tbar1;
 }
 
 function msgBBar(grp)
@@ -817,225 +827,312 @@ newA.Display();
 }catch(e){newA.Delete();}
 }
 
-function inboxAction(btn,vl,param,oneitem)
-{
+function inboxAction(btn, vl, param, oneitem) {
 //execute inbox toolbar
 //if (btn==undefined){alert("Cannot do that!");return;}
-var dpass = new Array();
-refreshWholeView=false;
-var itemsToArchive=new Array();
-var citx;
-if( typeof(oneitem) != "undefined" && oneitem != null)
-	cit = oneitem;
-else
-	cit=getCheckedItems(null,param);
-if (cit==false){return;}
-var cl=cit.length;
-var g=getActiveGrid();
-try{if(param.substr(0,4)=="olv:"){g=null;}}catch(e){}
-var noRecord=false;
-if (typeof(g)=="undefined" || g==null){noRecord=true;}else{var store=g.getStore();}
+    var dpass = new Array();
+    refreshWholeView = false;
+    var itemsToArchive = new Array();
+    var citx;
+    if (typeof(oneitem) != "undefined" && oneitem != null)
+        cit = oneitem;
+    else
+        cit = getCheckedItems(null, param);
+    if (cit == false) {
+        return;
+    }
+    var cl = cit.length;
+    var g = getActiveGrid();
+    try {
+        if (param.substr(0, 4) == "olv:") {
+            g = null;
+        }
+    } catch (e) {
+    }
+    var noRecord = false;
+    if (typeof(g) == "undefined" || g == null) {
+        noRecord = true;
+    } else {
+        var store = g.getStore();
+    }
 
-var itemList=new Array();
-var actionsCount=0;
-var imsg="";var amsg="";
+    var itemList = new Array();
+    var actionsCount = 0;
+    var imsg = "";
+    var amsg = "";
 
-if (cl==0){return;}
-var t=null;
-	for (var x=0;x<cl;x++)
-	{
-		if (noRecord)
-		{var it=cit[x];var id=it.EntryID;}
-		else
-		{
-			var id=cit[x].get("entryID");
-			try{
-				var it=NSpace.GetItemFromID(id);
-			}catch (e){/*store.remove(cit[x]);*/}
-		}
-
-	
-  
-  if (btn!=null)
-	{
-
- 
-	if (btn.id=="iarc" || btn.id=="arconly")
-	//archive
-	{
-	itemsToArchive.push({olitem:it,record:cit[x],update:noRecord});
-	}
-	if ((btn.id=="ireply" || btn.id=="icmreply") && (it.Class==43 || it.Class==45))
-	//reply
-	//{var nit=it.Reply;nit.Display();}
-		replyToMessage(it, true);
-	if ((btn.id=="repall" || btn.id=="icmrepall") && (it.Class==43 || it.Class==45))
-	//reply to all
-	//{var nit=it.ReplyAll;nit.Display();}
-		replyToMessage(it,false);
-	if ((btn.id=="iforw" || btn.id=="icmforw") && (it.Class==43 || it.Class==45))
-		//forward
-		forwardMessage(it);
-	if (btn.id=="irev")
-	//review
-	{toTagID(it,cit[x],7,noRecord);imsg=txtMsgTagReview;}
-	if (btn.id=="ideleg")
-	//delegate
-	{
-	itemList.push(cit[x]);
-	}
-	if (btn.id=="iinc")
-	//incubate
-	{toTagID(it,cit[x],9,noRecord);imsg=txtMsgIncubate;}
-	if (btn.id=="iol" || btn.id=="icmol")
-	//open outlook item
-	{it.Display();}
-	if( btn.id == "icont" || btn.id=="icmcont")
-		showSenderContact(id);
-	if ((btn.id=="imove" || btn.id=="icmmove") && it.Class==43)
-	{//move
-
-		if (jello.useGoToFolderToMove==false || jello.useGoToFolderToMove==0 || jello.useGoToFolderToMove=="0")
-		{
-			 if (t==null){t=NSpace.PickFolder();}
-				 if (t!=null)
-				 {
-					 if (t.DefaultItemType==0){
-
-						 try{moveMailTo(it,t,cit[x],noRecord);}catch(e){alert(txtMsgNoMoveErr);return;}
-						 if (!noRecord){try{updateRecordItem(cit[x],true);}catch(e){}}
-					 }else
-						 try{copyMailTo(it,t);}catch(e){alert(txtMsgNoMoveErr);return;}
-
-					 imsg=txtMsgMoveTo+" <a class=jellolink style=text-decoration:underline; onclick=outlookView('"+t.EntryID+"')><b>"+t+"</b></a>";
-
-				 }
-
-		}
-		else
-		{
-	try{var xlist = [it.EntryID, cit[x], noRecord];
-	dpass.push(xlist);} catch(e){}
-		}
-
-	}
-	}
-		if (vl=="tag")
-		{//tag item
-    var ctlname="itags";
-		  if (notEmpty(param)){var p=param.split(":");ctlname+=":"+p[1];}
-    var tg=Ext.getCmp(ctlname).getValue();
-	    if (notEmpty(tg)==false)
-		{var tg=Ext.getCmp(ctlname).getRawValue();}
-    if (notEmpty(tg)){if (addTagTo(tg,it,cit[x],noRecord)==false){return;}}
-		if (it.Class==48){actionsCount++;}
-		}
-
-    		if (vl=="prj")
-		{//convert action to project
-			if (it.Class==48)
-			{
-			lastOpenTagID=0;
-			var aFailed=convertToProject(id);
-			if (!noRecord){updateRecordItem(cit[x],true);}
-			}else{alert(txtInvalid);return;}
-		}
+    if (cl == 0) {
+        return;
+    }
+    var t = null;
+    for (var x = 0; x < cl; x++) {
+        if (noRecord) {
+            var it = cit[x];
+            var id = it.EntryID;
+        } else {
+            var id = cit[x].get("entryID");
+            try {
+                var it = NSpace.GetItemFromID(id);
+            } catch (e) { /*store.remove(cit[x]);*/
+            }
+        }
 
 
-		if (vl=="del" || vl=="icmdel")
-		{//delete item
-		if (t==null){t=confirm(txtMsgDelItem);}
-		if (t==true){if (OLDeleteItem(id)==true){continue;}
-			if (!noRecord){updateRecordItem(cit[x],true);gridGo((jello.goNextOnDelete?1:-1));}
-			imsg=txtMsgDeleted;}
-		else{imsg=null;}
-		}
-    
-		if (vl=="due" || vl=="icmdue")
-		{//add due date
+        if (btn != null) {
 
-					if( !setDueDate(it,param))
-				if (!noRecord){updateInboxRecord(cit[x]);}
 
-		}
+            if (btn.id == "iarc" || btn.id == "arconly")
+            //archive
+            {
+                itemsToArchive.push({ olitem: it, record: cit[x], update: noRecord });
+            }
+            if ((btn.id == "ireply" || btn.id == "icmreply") && (it.Class == 43 || it.Class == 45))
+            //reply
+            //{var nit=it.Reply;nit.Display();}
+                replyToMessage(it, true);
+            if ((btn.id == "repall" || btn.id == "icmrepall") && (it.Class == 43 || it.Class == 45))
+            //reply to all
+            //{var nit=it.ReplyAll;nit.Display();}
+                replyToMessage(it, false);
+            if ((btn.id == "iforw" || btn.id == "icmforw") && (it.Class == 43 || it.Class == 45))
+            //forward
+                forwardMessage(it);
+            if (btn.id == "irev")
+            //review
+            {
+                toTagID(it, cit[x], 7, noRecord);
+                imsg = txtMsgTagReview;
+            }
+            if (btn.id == "ideleg")
+            //delegate
+            {
+                itemList.push(cit[x]);
+            }
+            if (btn.id == "iinc")
+            //incubate
+            {
+                toTagID(it, cit[x], 9, noRecord);
+                imsg = txtMsgIncubate;
+            }
+            if (btn.id == "iol" || btn.id == "icmol")
+            //open outlook item
+            {
+                it.Display();
+            }
+            if (btn.id == "icont" || btn.id == "icmcont")
+                showSenderContact(id);
+            if ((btn.id == "imove" || btn.id == "icmmove") && it.Class == 43) { //move
 
-		if (vl=="cal")
-		{//create calendar entry w/ item(s) as text
-			//the appointment will be created in user's calendar folder respecting settings
-    	if (jello.createAppointmentsOnDefCal==0 || jello.createAppointmentsOnDefCal=="0")
-      {var cf=NSpace.GetFolderFromID(jello.calendarFolder);}
-      else
-      {var cf=calendarItems;}
+                if (jello.useGoToFolderToMove == false || jello.useGoToFolderToMove == 0 || jello.useGoToFolderToMove == "0") {
+                    if (t == null) {
+                        t = NSpace.PickFolder();
+                    }
+                    if (t != null) {
+                        if (t.DefaultItemType == 0) {
 
-		t=cf.Items.Add();
-	  t.Subject=it.Subject;
-	  try{t.Body=it.Body;}catch(e){}
-	  t.Display();
-		}
+                            try {
+                                moveMailTo(it, t, cit[x], noRecord);
+                            } catch (e) {
+                                alert(txtMsgNoMoveErr);
+                                return;
+                            }
+                            if (!noRecord) {
+                                try {
+                                    updateRecordItem(cit[x], true);
+                                } catch (e) {
+                                }
+                            }
+                        } else
+                            try {
+                                copyMailTo(it, t);
+                            } catch (e) {
+                                alert(txtMsgNoMoveErr);
+                                return;
+                            }
 
-	}
+                        imsg = txtMsgMoveTo + " <a class=jellolink style=text-decoration:underline; onclick=outlookView('" + t.EntryID + "')><b>" + t + "</b></a>";
 
- // if (itemList.length==0){alert("Some of the items selected could not be found!\nTry to remove those from Outlook.");pInbox();return;}
+                    }
+
+                } else {
+                    try {
+                        var xlist = [it.EntryID, cit[x], noRecord];
+                        dpass.push(xlist);
+                    } catch (e) {
+                    }
+                }
+
+            }
+        }
+        if (vl == "tag") { //tag item
+            var ctlname = "itags";
+            if (notEmpty(param)) {
+                var p = param.split(":");
+                ctlname += ":" + p[1];
+            }
+            var tg = Ext.getCmp(ctlname).getValue();
+            if (notEmpty(tg) == false) {
+                var tg = Ext.getCmp(ctlname).getRawValue();
+            }
+            if (notEmpty(tg)) {
+                if (addTagTo(tg, it, cit[x], noRecord) == false) {
+                    return;
+                }
+            }
+            if (it.Class == 48) {
+                actionsCount++;
+            }
+        }
+
+        if (vl == "prj") { //convert action to project
+            if (it.Class == 48) {
+                lastOpenTagID = 0;
+                var aFailed = convertToProject(id);
+                if (!noRecord) {
+                    updateRecordItem(cit[x], true);
+                }
+            } else {
+                alert(txtInvalid);
+                return;
+            }
+        }
+
+
+        if (vl == "del" || vl == "icmdel") { //delete item
+            if (t == null) {
+                t = confirm(txtMsgDelItem);
+            }
+            if (t == true) {
+                if (OLDeleteItem(id) == true) {
+                    continue;
+                }
+                if (!noRecord) {
+                    updateRecordItem(cit[x], true);
+                    gridGo((jello.goNextOnDelete ? 1 : -1));
+                }
+                imsg = txtMsgDeleted;
+            } else {
+                imsg = null;
+            }
+        }
+
+        if (vl == "due" || vl == "icmdue") { //add due date
+
+            if (!setDueDate(it, param))
+                if (!noRecord) {
+                    updateInboxRecord(cit[x]);
+                }
+
+        }
+
+        if (vl == "cal") { //create calendar entry w/ item(s) as text
+            //the appointment will be created in user's calendar folder respecting settings
+            if (jello.createAppointmentsOnDefCal == 0 || jello.createAppointmentsOnDefCal == "0") {
+                var cf = NSpace.GetFolderFromID(jello.calendarFolder);
+            } else {
+                var cf = calendarItems;
+            }
+
+            t = cf.Items.Add();
+            t.Subject = it.Subject;
+            try {
+                t.Body = it.Body;
+            } catch (e) {
+            }
+            t.Display();
+        }
+
+    }
+
+    // if (itemList.length==0){alert("Some of the items selected could not be found!\nTry to remove those from Outlook.");pInbox();return;}
 
 // do deletes and moves -
-try{
-  	if( dpass.length > 0){selFolder(txtAToFolder, moveOrCopyMessage, dpass,false);}
-	}catch(e){}
+    try {
+        if (dpass.length > 0) {
+            selFolder(txtAToFolder, moveOrCopyMessage, dpass, false);
+        }
+    } catch (e) {
+    }
 
-var msg="";
-	try{if (btn.id=="ideleg"){contactList=new Array();delegateItems(itemList);}}catch(e){}
-		try{
-		if (btn.id=="iarc"){msg=doArchive(itemsToArchive);}
-		if (btn.id=="arconly"){msg=doArchive(itemsToArchive,null,true);}
-		}catch(e){}
+    var msg = "";
+    try {
+        if (btn.id == "ideleg") {
+            contactList = new Array();
+            delegateItems(itemList);
+        }
+    } catch (e) {
+    }
+    try {
+        if (btn.id == "iarc") {
+            msg = doArchive(itemsToArchive);
+        }
+        if (btn.id == "arconly") {
+            msg = doArchive(itemsToArchive, null, true);
+        }
+    } catch (e) {
+    }
 
 //user info messages
-if (vl=="due" || vl=="icmdue"){param="";}
-var arcLink="<a class=jellolinktop onclick=archiveSelecions('"+param+"');><b>"+txtArchive+"</b></a>";
+    if (vl == "due" || vl == "icmdue") {
+        param = "";
+    }
+    var arcLink = "<a class=jellolinktop onclick=archiveSelecions('" + param + "');><b>" + txtArchive + "</b></a>";
 
-		if (vl=="tag")
-		{
-		    if (actionsCount==cl){msg=actionsCount+" "+txtMsgArcOK.replace("%1",arcLink);}
-		if (cl>actionsCount){msg=cl+" "+txtMsgArcTskOK.replace("%1",arcLink);}
-		    if (typeof(tg)!="undefined"){
-		    Ext.info.msg(txtTag+' '+tg,msg);
-		    var tg=Ext.getCmp(ctlname).reset();
-		    }
-		}
+    if (vl == "tag") {
+        if (actionsCount == cl) {
+            msg = actionsCount + " " + txtMsgArcOK.replace("%1", arcLink);
+        }
+        if (cl > actionsCount) {
+            msg = cl + " " + txtMsgArcTskOK.replace("%1", arcLink);
+        }
+        if (typeof(tg) != "undefined") {
+            Ext.info.msg(txtTag + ' ' + tg, msg);
+            var tg = Ext.getCmp(ctlname).reset();
+        }
+    }
 
-		if (vl=="due" || vl=="icmdue")
-		{
-		if (actionsCount==cl){msg=actionsCount+" "+txtMsgArcNDueOK.replace("%1",arcLink);}
-		if (cl>actionsCount){msg=cl+" "+txtMsgArcTskDueOK.replace("%1",arcLink);}
-		Ext.info.msg(txtDueDateOK,msg);
-		}
+    if (vl == "due" || vl == "icmdue") {
+        if (actionsCount == cl) {
+            msg = actionsCount + " " + txtMsgArcNDueOK.replace("%1", arcLink);
+        }
+        if (cl > actionsCount) {
+            msg = cl + " " + txtMsgArcTskDueOK.replace("%1", arcLink);
+        }
+        Ext.info.msg(txtDueDateOK, msg);
+    }
 
-		if ((vl=="del" || vl=="icmdel") && imsg!=null)
-		{Ext.info.msg(txtMsgActionComp,cl+" "+txtItemItems+" "+imsg);}
+    if ((vl == "del" || vl == "icmdel") && imsg != null) {
+        Ext.info.msg(txtMsgActionComp, cl + " " + txtItemItems + " " + imsg);
+    }
 
 
-	try
-	{
-		if (btn.id=="irev" || btn.id=="iinc" /*|| btn.id=="imove"*/)
-		{Ext.info.msg(txtMsgActionComp,cl+" "+txtItemItems+" "+imsg);}
-		if (btn.id=="iarc" || btn.id=="arconly")
-		{Ext.info.msg(txtMsgTtlArcv,msg);}
-	}catch(e){}
+    try {
+        if (btn.id == "irev" || btn.id == "iinc" /*|| btn.id=="imove"*/) {
+            Ext.info.msg(txtMsgActionComp, cl + " " + txtItemItems + " " + imsg);
+        }
+        if (btn.id == "iarc" || btn.id == "arconly") {
+            Ext.info.msg(txtMsgTtlArcv, msg);
+        }
+    } catch (e) {
+    }
 
 //if there is an outlook view control update toolbar counter
-if (refreshWholeView){pInbox();return;}
-updateOLViewCounter();
+    if (refreshWholeView) {
+        pInbox();
+        return;
+    }
+    updateOLViewCounter();
 //if did archive clear selections
-try{
-if (btn.id=="iarc" || btn.id=="arconly"){
-  if (jello.selectFirstItem==0 || jello.selectFirstItem=="0")
-  {
-  g.getSelectionModel().clearSelections();
-  }
-}
-}catch(e){}
-setTimeout(function(){updateTheLatestThing();},6);
-status=txtReady;
+    try {
+        if (btn.id == "iarc" || btn.id == "arconly") {
+            if (jello.selectFirstItem == 0 || jello.selectFirstItem == "0") {
+                g.getSelectionModel().clearSelections();
+            }
+        }
+    } catch (e) {
+    }
+    setTimeout(function() { updateTheLatestThing(); }, 6);
+    status = txtReady;
 }
 
 function OLDmoveOrCopyMessage(folderID, data, makeTask)
@@ -1158,34 +1255,48 @@ inboxAction(Ext.getCmp('iarc'),null,param);
 }
 
 
+function addTagTo(tagname, olitem, rec, noRec) {
+	/// <summary>
+    /// Adds a tag to an inbox item
+	/// </summary>
+	/// <param name="tagname"></param>
+	/// <param name="olitem"></param>
+	/// <param name="rec"></param>
+	/// <param name="noRec"></param>
+	/// <returns type=""></returns>
 
+    if (olitem.Class == 44) {
+        Ext.info.msg('Alert', txtInvalid);
+        return;
+    }
+    tagname = Trim(tagname);
+    var r = getTag(tagname);
+    var wasNew = false;
 
-function addTagTo(tagname,olitem,rec,noRec)
-{//add a tag to an inbox item
-if (olitem.Class==44){Ext.info.msg('Alert', txtInvalid);return;}
-tagname=Trim(tagname);
-var r=getTag(tagname);
-var wasNew=false;
-
-if (typeof(r)=="undefined")
-{
+    if (typeof(r) == "undefined") {
 //if tag not exists create it
-var choice=false;
-if (choice=confirm(txtMsgNewTag.replace("%1",tagname))==false){return false;}
-if (notEmpty(tagname)==false){return;}
-createTag(tagname);
-wasNew=true;
+        var choice = false;
+        if (choice = confirm(txtMsgNewTag.replace("%1", tagname)) == false) {
+            return false;
+        }
+        if (notEmpty(tagname) == false) {
+            return;
+        }
+        createTag(tagname);
+        wasNew = true;
+    }
+
+    addOLItemCategory(olitem, tagname);
+    if (noRec) {
+        return;
+    }
+    updateInboxRecord(rec);
+    if (wasNew) {
+        setTimeout(function() { refreshView(); }, 6);
+    }
+
 }
 
-addOLItemCategory(olitem,tagname);
-if (noRec){return;}
-updateInboxRecord(rec);
-	if (wasNew)
-	{
-	setTimeout(function(){refreshView();},6);
-	}
-
-}
 function renderInboxSubject(v,m,r)
 {
 //render the subject line in grid
@@ -1325,7 +1436,7 @@ function archiveItem(it,rec,copyToo,noRec,archiveIt,createTask)
 //createTask=Create task linked with the arc item? t/f
 
 //return array:1.Status success/fail, 2.Created Task ref, 3.Archived Item ref
-    debugger;
+
 	if (!noRec)
 	{
 	var g=getActiveGrid();
@@ -1493,17 +1604,24 @@ var t=NSpace.PickFolder();
 		}
 	}
 }
-function toTagID(it,rec,tid,noRec)
-{
-//add review tag to item & archive
-var ix=tagStore.find("id",new RegExp("^"+tid+"$"));
-var r=tagStore.getAt(ix);
-var rtt=r.get("tag");
-addOLItemCategory(it,rtt);
-var ita=new Array();
-ita.push({olitem:it,record:rec,update:noRec});
-var newtask=doArchive(ita,true);
-return newtask;
+
+function toTagID(it, rec, tid, noRec) {
+	/// <summary>
+    /// Adds tag specified by id to item & archive
+	/// </summary>
+	/// <param name="it">Ref to OL item.</param>
+	/// <param name="rec"></param>
+	/// <param name="tid">ID of the tag to add.</param>
+	/// <param name="noRec"></param>
+	/// <returns type=""></returns>
+    var ix = tagStore.find("id", new RegExp("^" + tid + "$"));
+    var r = tagStore.getAt(ix);
+    var rtt = r.get("tag");
+    addOLItemCategory(it, rtt);
+    var ita = new Array();
+    ita.push({ olitem: it, record: rec, update: noRec });
+    var newtask = doArchive(ita, true);
+    return newtask;
 }
 
 function countInboxItems()

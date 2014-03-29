@@ -17,7 +17,7 @@
 
 var customizingWidget=null;
 var ImportantPastDueCount=0;
-debugger;
+//debugger;
 //define tools
 var tSet={
         id:'gear',
