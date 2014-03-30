@@ -484,16 +484,20 @@ function buildWaitingGrid(ctx, iits, counter, filtering, oItems, istag) {
         try {
             if (iits.Count > 0) {
                 for (var x = 1; x <= iits.Count; x++) {
-                    var lc = iits(x).Links.Count;
+                    var item = iits(x);
+                    var lc = 0;
+                    if (item.Links != null) {
+                        lc = item.Links.Count;
+                    }
                     if (lc > 0) {
                         for (var y = 1; y <= lc; y++) {
-                            var ar = new actionObject(iits(x));
-                            ar.contacts = iits(x).Links.Item(y).Name;
+                            var ar = new actionObject(item);
+                            ar.contacts = item.Links.Item(y).Name;
                             var newRec = new actionRecord(ar);
                             waitStore.add(newRec);
                         }
                     } else {
-                        var ar = new actionObject(iits(x));
+                        var ar = new actionObject(item);
                         ar.contacts = "(" + txtContactNo + ")";
                         var newRec = new actionRecord(ar);
                         waitStore.add(newRec);
