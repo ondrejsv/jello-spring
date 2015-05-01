@@ -1669,7 +1669,7 @@ function WOLFind(id, fol) {
 
         var sv = document.getElementById("olswe" + id).value;
         var oje = olf.Items;
-        var its = oje.Restrict("@SQL=" + fld + " like '%" + sv + "%'");
+        var its = oje.Restrict("@SQL=" + fld + " like '%" + sv + "%' OR urn:schemas:httpmail:fromname like '%" + sv + "%'");
         var ct = its.Count;
         if (ct > 0) {
             for (var x = 1; x <= ct; x++) {
