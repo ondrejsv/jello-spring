@@ -798,7 +798,7 @@ function saveActionForm(b, noGrid, returnID) {
         var rval = Ext.getCmp("olid").getValue();
     } catch (e) {
     }
-    xmsg = "<a class=jellolinktop onclick=scAction('" + it.EntryID + "')>" + it + "</a>";
+    xmsg = "<a class=jellolinktop onclick=scAction('" + it.EntryID + "')>" + it.Subject + "</a>";
     Ext.info.msg(txtActionEdit, xmsg + "<br>" + txtActionSuccess);
     if (returnID == true) {
 
@@ -3045,10 +3045,10 @@ function delAttachment(id, index) {
 }
 
 function actionEditContacts() {
-    if (OLversion >= 15) {
-        alert("Cannot use this functionality in this version of Outlook");
-        return;
-    }
+    //if (OLversion >= 15) {
+    //    alert("Cannot use this functionality in this version of Outlook");
+    //    return;
+    //}
 //edit contacts from the action form
     var olid = Ext.getCmp("olid").getValue();
     if (!notEmpty(olid) || olid == "000") { //unsaved record. Save first and edit links next.

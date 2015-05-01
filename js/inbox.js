@@ -1657,7 +1657,9 @@ function archiveItem(it, rec, copyToo, noRec, archiveIt, createTask) {
     //if item has a due date a task has to be created despite tagging
     if (isDate(idue) && notEmpty(idue)) {
         var idd = new Date(idue);
-        if (idd.getYear() < 4000 && it.Parent.EntryID != jello.actionFolder) {
+        //OSV skip it if the mail to-do flag is marked complete. This means that we found
+        // an e-mail which somebody already resolved out of jello (in plain outlook).
+        if (idd.getYear() < 4000 && it.Parent.EntryID != jello.actionFolder && (it.TaskCompletedDate == null || new Date(it.TaskCompletedDate).getYear() >= 4000)) {
             createTask = true;
         }
     }
@@ -2805,7 +2807,12 @@ function doArchive(aItems, returnTask, arcOnly) {
             otype = 1000;
         }
         switch (otype) {
-        case 43:
+        case 43:        // mail
+            archiveIt = true;
+            createTask = true;
+            break;
+        // OSV (e.g. mail delivery item)
+        case 46:        // remote
             archiveIt = true;
             createTask = true;
             break;
@@ -3000,7 +3007,7 @@ function dueDateProperties(id, cdate) {
         return;
     }
 
-    var msg = it + "<br>" + txtDueDate + ":<b>" + cdate + "</b>";
+    var msg = it.Subject + "<br>" + txtDueDate + ":<b>" + cdate + "</b>";
     var buts = { no: txtDuePropsRemove, cancel: txtCancel };
 
     Ext.Msg.show({

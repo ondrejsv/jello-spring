@@ -371,7 +371,7 @@ function getTicklerFile(fDate, tDate, fun, store, clear, isMove) {
                     var newRec = new ticklerRecord(ce);
                     store.add(newRec);
                     addDuration(newRec);
-                    status = txtStatusGetting + "..." + Ap;
+                    status = txtStatusGetting + "..." + Ap.Subject;
                     counter++;
                 } else {
                     if (jello.CalendarShowCompleted == "1" || jello.CalendarShowCompleted == true) {
@@ -411,6 +411,7 @@ function getTicklerFile(fDate, tDate, fun, store, clear, isMove) {
     }
 
 
+    //var iF = NSpace.GetFolderFromID(jello.inboxFolder).Items;
     var iF = NSpace.GetFolderFromID(jello.actionFolder).Items;
     iF.Sort("http://schemas.microsoft.com/mapi/id/{00062003-0000-0000-C000-000000000046}/81040040");
 
@@ -425,7 +426,7 @@ function getTicklerFile(fDate, tDate, fun, store, clear, isMove) {
                 var newRec = new ticklerRecord(ce);
                 store.add(newRec);
                 addDuration(newRec);
-                status = txtStatusGetting + "..." + Ap;
+                //status = txtStatusGetting + "..." + Ap;
             }
             counter++;
         }
