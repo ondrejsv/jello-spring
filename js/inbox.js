@@ -713,7 +713,7 @@ function msgToolbar(isOLView) {
         {
             iconCls: 'olarchive',
             text: '<b>' + txtArchive + '</b>',
-            tooltip: txtArcvInfo + ' (Ctrl+A)',
+            tooltip: txtArcvInfo + ' (Ctrl+E)',
             width: 40,
             id: 'iarc',
             handler: inboxAction
@@ -2303,7 +2303,7 @@ Ext.getCmp("ivolinbox").show();
     });
 
     var gmap6 = new Ext.KeyMap('igrid', {
-        key: 'a',
+        key: 'e',
         fn: function() { inboxAction(Ext.getCmp('iarc')); },
         stopEvent: true,
         ctrl: true,
@@ -2345,15 +2345,15 @@ Ext.getCmp("ivolinbox").show();
         scope: this
     });
 
-    var gmap10 = new Ext.KeyMap('igrid', {
-        key: 'e',
-        ctrl: true,
-        fn: function() {
-            inboxAction(Ext.getCmp('ideleg'));
-        },
-        stopEvent: true,
-        scope: this
-    });
+    //var gmap10 = new Ext.KeyMap('igrid', {
+    //    key: 'e',
+    //    ctrl: true,
+    //    fn: function() {
+    //        inboxAction(Ext.getCmp('ideleg'));
+    //    },
+    //    stopEvent: true,
+    //    scope: this
+    //});
 
 //Ctrl+q open OL item
     var gmap12 = new Ext.KeyMap('igrid', {
